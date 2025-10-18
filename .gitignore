@@ -1,2 +1,24 @@
 
+
 .vscode/
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Deno
+.deno/
+**/.deno/
+deno.lock
+
+# Environment variables
+.env
+.env.local
+
+# Supabase
+.branches
+.temp
+
+# OS
+.DS_Store
+Thumbs.db

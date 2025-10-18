@@ -3,5 +3,14 @@
     "lib": ["deno.window", "deno.ns"],
     "strict": true
   },
-  "imports": {}
+  "imports": {
+    "hono": "npm:hono@^4.6.14",
+    "mcp-lite": "npm:mcp-lite@0.8.2",
+    "zod": "npm:zod@^3.23.8",
+    "zod-to-json-schema": "npm:zod-to-json-schema@^3.24.1",
+    "@supabase/supabase-js": "npm:@supabase/supabase-js@^2.47.10",
+    "@mcp-ui/server": "npm:@mcp-ui/server"
+  },
+  "nodeModulesDir": "auto",
+  "lock": false
 }
