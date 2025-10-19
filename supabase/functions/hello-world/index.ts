@@ -21,20 +21,75 @@ const mcp = new McpServer({
 });
 
 // Helper function to format query results as HTML table
-function formatResultsAsTable(data: Record<string, unknown>[]): string {
+function formatResultsAsTable(data: Record<string, unknown>[] | null): string {
   if (!data || data.length === 0) {
-    return `<div class="sql-results" style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; background: #1c1c1c;">
-      <p style="color: #b4b4b4; font-style: italic; padding: 16px; background: #181818; border: 1px solid #2e2e2e; border-radius: 6px; text-align: center;">No results found</p>
-    </div>`;
+    return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+      <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        body {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          background: #1c1c1c;
+          color: #ededed;
+          padding: 20px;
+        }
+        .no-results {
+          color: #b4b4b4;
+          font-style: italic;
+          padding: 16px;
+          background: #181818;
+          border: 1px solid #2e2e2e;
+          border-radius: 6px;
+          text-align: center;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="sql-results">
+        <p class="no-results">0 results</p>
+      </div>
+    </body>
+    </html>`;
   }
 
   const columns = Object.keys(data[0]);
   
   return `
-    <div class="sql-results" style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; background: #1c1c1c;">
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-        
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        body {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          background: #1c1c1c;
+          color: #ededed;
+          padding: 20px;
+        }
+        .sql-results {
+          width: 100%;
+          max-width: 100%;
+        }
         .sql-table {
           width: 100%;
           border-collapse: separate;
@@ -85,24 +140,29 @@ function formatResultsAsTable(data: Record<string, unknown>[]): string {
           font-weight: 600;
         }
       </style>
-      <div class="results-info">
-        <strong>${data.length}</strong> row${data.length !== 1 ? 's' : ''} returned
-      </div>
-      <table class="sql-table">
-        <thead>
-          <tr>
-            ${columns.map(col => `<th>${escapeHtml(col)}</th>`).join('')}
-          </tr>
-        </thead>
-        <tbody>
-          ${data.map(row => `
+    </head>
+    <body>
+      <div class="sql-results">
+        <div class="results-info">
+          <strong>${data.length}</strong> row${data.length !== 1 ? 's' : ''} returned
+        </div>
+        <table class="sql-table">
+          <thead>
             <tr>
-              ${columns.map(col => `<td>${escapeHtml(String(row[col] ?? 'NULL'))}</td>`).join('')}
+              ${columns.map(col => `<th>${escapeHtml(col)}</th>`).join('')}
             </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            ${data.map(row => `
+              <tr>
+                ${columns.map(col => `<td>${escapeHtml(String(row[col] ?? 'NULL'))}</td>`).join('')}
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </body>
+    </html>
   `;
 }
 
